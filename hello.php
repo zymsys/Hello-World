@@ -1,5 +1,10 @@
 <?php
-class GreetingModel
+interface IGreetingModel
+{
+    function getGreeting();
+}
+
+class GreetingModel implements IGreetingModel
 {
     private $_greeting;
 
@@ -14,9 +19,14 @@ class GreetingModel
     }
 }
 
-class GreetingView
+interface IGreetingView
 {
-    public function issueGreeting(GreetingModel $model)
+    public function issueGreeting(IGreetingModel $model);
+}
+
+class GreetingView implements IGreetingView
+{
+    public function issueGreeting(IGreetingModel $model)
     {
         echo $model->getGreeting() . "\n";
     }
@@ -27,7 +37,7 @@ class GreetingController
     private $_greetingModel;
     private $_greetingView;
 
-    public function __construct(GreetingModel $model, GreetingView $view)
+    public function __construct(IGreetingModel $model, IGreetingView $view)
     {
         $this->_greetingModel = $model;
         $this->_greetingView = $view;
