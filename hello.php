@@ -3,9 +3,9 @@ class GreetingModel
 {
     private $_greeting;
 
-    function __construct()
+    function __construct($greeting)
     {
-        $this->_greeting = "Hello World!";
+        $this->_greeting = $greeting;
     }
 
     public function getGreeting()
@@ -24,12 +24,22 @@ class GreetingView
 
 class GreetingController
 {
+    private $_greetingModel;
+    private $_greetingView;
+
+    public function __construct(GreetingModel $model, GreetingView $view)
+    {
+        $this->_greetingModel = $model;
+        $this->_greetingView = $view;
+    }
+
     public function takeAction()
     {
-        $view = new GreetingView();
-        $view->issueGreeting(new GreetingModel());
+        $this->_greetingView->issueGreeting($this->_greetingModel);
     }
 }
 
-$controller = new GreetingController();
+$model = new GreetingModel("Hello World!");
+$view = new GreetingView();
+$controller = new GreetingController($model, $view);
 $controller->takeAction();
